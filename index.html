@@ -15,7 +15,7 @@
       <h2>Which Bank?</h2>
     </div>
     <div class="container">
-      <form onsubmit="Compute()">
+      <form>
         <div class="form-group row">
           <label for="inputAccountBalance" class="col-sm-3 col-form-label">Account Balance</label>
           <div class="col-sm-9">
@@ -66,7 +66,7 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-9">
-            <button type="submit" class="btn btn-primary">Find my best bank!</button>
+            <button type="button" class="btn btn-primary" onclick="Compute()">Find my best bank!</button>
           </div>
         </div>
       </form>
@@ -87,6 +87,12 @@
         const monthlySalary = document.getElementById("inputMonthSalary").value;
         const creditCardSpending = document.getElementById("inputCreditCardSpending").value;
         const targetMonthlySavings = document.getElementById("inputTargetMonthlySavings").value;
+        const checkGiro = document.getElementById("gridCheckGiro").value;
+        const checkInsurance = document.getElementById("gridCheckInsurance").checked;
+        const checkInvestment = document.getElementById("gridCheckInvestment").checked;
+
+        const dbs_interest = DBS_Multiplier(accountBalance, monthlySalary, creditCardSpending, checkInsurance, checkInvestment);
+        alert(dbs_interest);
       }
     </script>
   </body>
