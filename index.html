@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="py-5 text-center">
+      <h2>Which Bank?</h2>
+    </div>
+    <div class="container">
+      <form onsubmit="Compute()">
+        <div class="form-group row">
+          <label for="inputAccountBalance" class="col-sm-3 col-form-label">Account Balance</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="inputAccountBalance">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputMonthSalary" class="col-sm-3 col-form-label">Monthly Salary</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="inputMonthSalary">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputCreditCardSpending" class="col-sm-3 col-form-label">Credit Card Spending</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="inputCreditCardSpending">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputTargetMonthlySavings" class="col-sm-3 col-form-label">Target Monthly Savings</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="inputTargetMonthlySavings">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">Pay 3 Bills via GIRO</div>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheckGiro">
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">Insuring with Bank?</div>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheckInsurance">
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">Investing with Bank?</div>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheckInvestment">
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-9">
+            <button type="submit" class="btn btn-primary">Find my best bank!</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Scripts for Computing Bank Interests -->
+    <script src="dbs_multiplier.js"></script>
+
+    <script type="text/javascript">
+      function Compute() {
+        const accountBalance = document.getElementById("inputAccountBalance").value;
+        const monthlySalary = document.getElementById("inputMonthSalary").value;
+        const creditCardSpending = document.getElementById("inputCreditCardSpending").value;
+        const targetMonthlySavings = document.getElementById("inputTargetMonthlySavings").value;
+      }
+    </script>
+  </body>
+</html>
+
