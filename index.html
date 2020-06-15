@@ -129,6 +129,13 @@
     <script src="./bank_js/boc_smartsaver.js"></script>
 
     <script type="text/javascript">
+      const BankToIdx = {
+        'DBS_Multiplier': 1,
+        'OCBC_360': 2,
+        'UOB_One': 3,
+        'BOC_SmartSaver': 4,
+      };
+
       function AppendTable(tableId, month, accountBalances) {
         const tBody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         const tRow = tBody.insertRow();
@@ -137,6 +144,9 @@
         tRow.insertCell(2).appendChild(document.createTextNode(parseFloat(accountBalances['OCBC_360']).toFixed(2)));
         tRow.insertCell(3).appendChild(document.createTextNode(parseFloat(accountBalances['UOB_One']).toFixed(2)));
         tRow.insertCell(4).appendChild(document.createTextNode(parseFloat(accountBalances['BOC_SmartSaver']).toFixed(2)));
+
+        const maxKey = Object.keys(accountBalances).reduce((a, b) => accountBalances[a] > accountBalances[b] ? a : b);
+        tRow.cells[BankToIdx[maxKey]].classList.add('table-success');
       }
 
       function FindBestBank() {
