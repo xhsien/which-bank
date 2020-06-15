@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
 
-    <title>Hello, world!</title>
+    <title>Which Bank?</title>
   </head>
   <body>
     <div class="py-5 text-center">
@@ -20,25 +20,25 @@
         <div class="form-group row">
           <label for="inputAccountBalance" class="col-sm-3 col-form-label">Account Balance</label>
           <div class="col-sm-9">
-            <input type="number" class="form-control" id="inputAccountBalance">
+            <input type="number" value="0" class="form-control" id="inputAccountBalance">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputMonthSalary" class="col-sm-3 col-form-label">Monthly Salary</label>
           <div class="col-sm-9">
-            <input type="number" class="form-control" id="inputMonthSalary">
+            <input type="number" value="0" class="form-control" id="inputMonthSalary">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputCreditCardSpending" class="col-sm-3 col-form-label">Credit Card Spending</label>
           <div class="col-sm-9">
-            <input type="number" class="form-control" id="inputCreditCardSpending">
+            <input type="number" value="0" class="form-control" id="inputCreditCardSpending">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputTargetMonthlySavings" class="col-sm-3 col-form-label">Target Monthly Savings</label>
           <div class="col-sm-9">
-            <input type="number" class="form-control" id="inputTargetMonthlySavings">
+            <input type="number" value="0" class="form-control" id="inputTargetMonthlySavings">
           </div>
         </div>
         <div class="form-group row">
@@ -67,10 +67,40 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-9">
-            <button type="button" class="btn btn-primary" onclick="Compute()">Find my best bank!</button>
+            <button type="button" class="btn btn-primary" onclick="FindBestBank()">Find my best bank!</button>
           </div>
         </div>
       </form>
+    </div>
+
+    <div class="container">
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>DBS Multiplier</strong> interest rate is correct as of <strong>1 May 2020</strong>.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>OCBC 360</strong> interest rate is correct as of <strong>1 July 2020</strong>.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top: 20px;">
+      <table class="table" style="visibility: hidden;" id="resultTable">
+        <thead>
+          <tr>
+            <th scope="col">Month</th>
+            <th scope="col">DBS Multiplier</th>
+            <th scope="col">OCBC 360</th>
+            <th scope="col">UOB One</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
 
     <!-- Optional JavaScript -->
@@ -84,17 +114,71 @@
     <script src="ocbc_360.js"></script>
 
     <script type="text/javascript">
-      function Compute() {
-        const accountBalance = document.getElementById("inputAccountBalance").value;
-        const monthlySalary = document.getElementById("inputMonthSalary").value;
-        const creditCardSpending = document.getElementById("inputCreditCardSpending").value;
-        const targetMonthlySavings = document.getElementById("inputTargetMonthlySavings").value;
-        const checkGiro = document.getElementById("gridCheckGiro").value;
+      function AppendTable(tableId, month, accountBalances) {
+        const tBody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        const tRow = tBody.insertRow();
+        tRow.insertCell(0).appendChild(document.createTextNode(month));
+        tRow.insertCell(1).appendChild(document.createTextNode(parseFloat(accountBalances['DBS_Multiplier']).toFixed(2)));
+        tRow.insertCell(2).appendChild(document.createTextNode(parseFloat(accountBalances['OCBC_360']).toFixed(2)));
+        tRow.insertCell(3).appendChild(document.createTextNode(parseFloat(accountBalances['UOB_One']).toFixed(2)));
+      }
+
+      function FindBestBank() {
+        function UpdateAccountBalances(accountBalances) {
+          const dbs_interest = DBS_Multiplier(accountBalances['DBS_Multiplier'], monthlySalary, creditCardSpending, checkInsurance, checkInvestment);
+          const ocbc_interest = ocbc360(accountBalances['OCBC_360'], monthlySalary, targetMonthlySavings, checkInsurance, checkInvestment);
+          const uob_interest = 0;
+
+          accountBalances['DBS_Multiplier'] += dbs_interest + targetMonthlySavings;
+          accountBalances['OCBC_360'] += ocbc_interest + targetMonthlySavings;
+          accountBalances['UOB_One'] += uob_interest + targetMonthlySavings;
+        }
+
+        const rawAccountBalance = document.getElementById("inputAccountBalance").value;
+        if (isNaN(rawAccountBalance) || rawAccountBalance < 0) {
+          alert("Account balance must be a nonnegative number");
+          return;
+        }
+        const accountBalance = parseInt(rawAccountBalance);
+
+        const rawMonthlySalary = document.getElementById("inputMonthSalary").value;
+        if (isNaN(rawMonthlySalary) || rawMonthlySalary < 0) {
+          alert("Monthly salary must be a nonnegative number");
+          return;
+        }
+        const monthlySalary = parseInt(rawMonthlySalary);
+
+        const rawCreditCardSpending = document.getElementById("inputCreditCardSpending").value;
+        if (isNaN(rawCreditCardSpending) || rawCreditCardSpending < 0) {
+          alert("Credit card spending must be a nonnegative number");
+          return;
+        }
+        const creditCardSpending = parseInt(rawCreditCardSpending);
+
+        const rawTargetMonthlySavings = document.getElementById("inputTargetMonthlySavings").value;
+        if (isNaN(rawTargetMonthlySavings) || rawTargetMonthlySavings < 0) {
+          alert("Target monthly savings must be a nonnegative number");
+          return;
+        }
+        const targetMonthlySavings = parseInt(rawTargetMonthlySavings);
+
+        const checkGiro = parseInt(document.getElementById("gridCheckGiro").value);
         const checkInsurance = document.getElementById("gridCheckInsurance").checked;
         const checkInvestment = document.getElementById("gridCheckInvestment").checked;
 
-        const dbs_interest = DBS_Multiplier(accountBalance, monthlySalary, creditCardSpending, checkInsurance, checkInvestment);
-        alert(dbs_interest);
+        $("#resultTable tbody tr").remove();
+
+        let accountBalances = {
+          'DBS_Multiplier': accountBalance,
+          'OCBC_360': accountBalance,
+          'UOB_One': accountBalance,
+        };
+        for (let i = 0; i <= 24; i++) {
+          AppendTable("resultTable", i, accountBalances);
+          UpdateAccountBalances(accountBalances);
+        }
+
+        document.getElementById("resultTable").style.visibility = 'visible';
       }
     </script>
   </body>
