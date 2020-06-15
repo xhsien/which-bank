@@ -86,6 +86,18 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>UOB One</strong> interest rate is correct as of <strong>1 May 2020</strong>.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>BOC SmartSaver</strong> interest rate is correct as of <strong>1 May 2020</strong>.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
 
     <div class="container" style="padding-top: 20px;">
@@ -96,6 +108,7 @@
             <th scope="col">DBS Multiplier</th>
             <th scope="col">OCBC 360</th>
             <th scope="col">UOB One</th>
+            <th scope="col">BOC SmartSaver</th>
           </tr>
         </thead>
         <tbody>
@@ -113,6 +126,7 @@
     <script src="./bank_js/dbs_multiplier.js"></script>
     <script src="./bank_js/ocbc_360.js"></script>
     <script src="./bank_js/uob_one.js"></script>
+    <script src="./bank_js/boc_smartsaver.js"></script>
 
     <script type="text/javascript">
       function AppendTable(tableId, month, accountBalances) {
@@ -122,6 +136,7 @@
         tRow.insertCell(1).appendChild(document.createTextNode(parseFloat(accountBalances['DBS_Multiplier']).toFixed(2)));
         tRow.insertCell(2).appendChild(document.createTextNode(parseFloat(accountBalances['OCBC_360']).toFixed(2)));
         tRow.insertCell(3).appendChild(document.createTextNode(parseFloat(accountBalances['UOB_One']).toFixed(2)));
+        tRow.insertCell(4).appendChild(document.createTextNode(parseFloat(accountBalances['BOC_SmartSaver']).toFixed(2)));
       }
 
       function FindBestBank() {
@@ -129,10 +144,12 @@
           const dbs_interest = DBS_Multiplier(accountBalances['DBS_Multiplier'], monthlySalary, creditCardSpending, checkInsurance, checkInvestment);
           const ocbc_interest = ocbc360(accountBalances['OCBC_360'], monthlySalary, targetMonthlySavings, checkInsurance, checkInvestment);
           const uob_interest = UOB_One(accountBalances['UOB_One'], monthlySalary, creditCardSpending, checkGiro);
+          const boc_interest = BOC_SmartSaver(accountBalance, monthlySalary, creditCardSpending, checkGiro);
 
           accountBalances['DBS_Multiplier'] += dbs_interest + targetMonthlySavings;
           accountBalances['OCBC_360'] += ocbc_interest + targetMonthlySavings;
           accountBalances['UOB_One'] += uob_interest + targetMonthlySavings;
+          accountBalances['BOC_SmartSaver'] += boc_interest + targetMonthlySavings;
         }
 
         const rawAccountBalance = document.getElementById("inputAccountBalance").value;
@@ -173,6 +190,7 @@
           'DBS_Multiplier': accountBalance,
           'OCBC_360': accountBalance,
           'UOB_One': accountBalance,
+          'BOC_SmartSaver': accountBalance,
         };
         for (let i = 0; i <= 24; i++) {
           AppendTable("resultTable", i, accountBalances);
