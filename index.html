@@ -110,8 +110,9 @@
     <script src="./js/bootstrap.min.js"></script>
 
     <!-- Scripts for Computing Bank Interests -->
-    <script src="dbs_multiplier.js"></script>
-    <script src="ocbc_360.js"></script>
+    <script src="./bank_js/dbs_multiplier.js"></script>
+    <script src="./bank_js/ocbc_360.js"></script>
+    <script src="./bank_js/uob_one.js"></script>
 
     <script type="text/javascript">
       function AppendTable(tableId, month, accountBalances) {
@@ -127,7 +128,7 @@
         function UpdateAccountBalances(accountBalances) {
           const dbs_interest = DBS_Multiplier(accountBalances['DBS_Multiplier'], monthlySalary, creditCardSpending, checkInsurance, checkInvestment);
           const ocbc_interest = ocbc360(accountBalances['OCBC_360'], monthlySalary, targetMonthlySavings, checkInsurance, checkInvestment);
-          const uob_interest = 0;
+          const uob_interest = UOB_One(accountBalances['UOB_One'], monthlySalary, creditCardSpending, checkGiro);
 
           accountBalances['DBS_Multiplier'] += dbs_interest + targetMonthlySavings;
           accountBalances['OCBC_360'] += ocbc_interest + targetMonthlySavings;
