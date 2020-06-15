@@ -51,7 +51,9 @@ function DBS_Multiplier(accountBalance, monthlySalary, creditCardSpending, check
             break;
         case 2:
             interest += Math.min(50000, accountBalance) * AnnumToMonth(interestRates[1]);
+            break;
         case 3:
+            interest += Math.min(50000, accountBalance) * AnnumToMonth(interestRates[1]);
             if (accountBalance > 50000) {
                 interest += Math.min(50000, accountBalance - 50000) * AnnumToMonth(interestRates[2]);
             }
